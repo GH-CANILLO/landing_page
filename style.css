@@ -233,6 +233,8 @@ body {
 }
 .phone-input-wrap {
   flex: 1;
+  min-width: 0; /* ADD THIS LINE TO FIX CROPPING */
+  overflow: hidden; /* HELPS PREVENT OVERFLOW */
 }
 /* 1. Base State: The "Disabled/Unfilled" look */
 .btn-submit {
@@ -280,16 +282,6 @@ body {
   animation: pulse-green 2s infinite;
 }
 /* 3. Hover effect for when it is active */
-.btn-submit.active:hover {
-  background: #009159; 
-  transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(0, 168, 107, 0.35);
-}
-.btn-submit.active:hover {
-  background: #009159;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(0, 168, 107, 0.35);
-}
 .btn-submit.active:active {
   transform: translateY(0);
 }
