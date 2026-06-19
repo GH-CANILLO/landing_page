@@ -82,23 +82,14 @@
     </div>
  <script id="main-form-handler">
   (function() {
-    // 1. Setup Elements
     const emailInput = document.getElementById('in1em');
     const phoneInput = document.getElementById('in2ph');
     const fbInput = document.getElementById('in3fb');
-    const countrySelect = document.getElementById('sl1cc');
     const submitBtn = document.getElementById('bt1sb');
-    const flagEmoji = document.getElementById('fl1em');
     
-    // 2. Logic: Update Flag on change
-    const flagMap = { '+63': '🇵🇭', '+1': '🇺🇸', '+44': '🇬🇧', '+61': '🇦🇺', '+81': '🇯🇵', '+82': '🇰🇷', '+86': '🇨🇳', '+91': '🇮🇳', '+65': '🇸🇬', '+60': '🇲🇾', '+66': '🇹🇭', '+84': '🇻🇳', '+62': '🇮🇩', '+49': '🇩🇪', '+33': '🇫🇷' };
-    countrySelect.addEventListener('change', () => flagEmoji.textContent = flagMap[countrySelect.value] || '🏳️');
-
-    // 3. Logic: Form Submission
     submitBtn.addEventListener('click', function(e) {
       e.preventDefault();
 
-      // Gather Data using URLSearchParams (This is required for the script to read it)
       const formData = new URLSearchParams();
       formData.append('email', emailInput.value.trim());
       formData.append('phone', phoneInput.value.trim());
@@ -107,13 +98,13 @@
       submitBtn.textContent = 'Submitting...';
       submitBtn.style.pointerEvents = 'none';
 
-      // SEND TO GOOGLE SHEETS
+      // Ensure this URL is exactly from your latest "Deploy"
       const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRWTTnCk273sTO2lyIXQTscLjjXAuB6WXW8JGi4ngtkvsuZ4GGPlbQIEMKdd0hTq_FIQ/exec";
 
       fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        body: formData // Sending as Form Data
+        body: formData
       })
       .then(() => {
         submitBtn.textContent = '✓ Account Created!';
