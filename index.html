@@ -80,7 +80,7 @@
         <p id="ft1tx" class="footer-text">747Live is officially operated and licensed by PAGCOR under COA No. OPG-24-100.</p>
       </div>
     </div>
-   <script id="main-form-handler">
+ <script id="main-form-handler">
   (function() {
     // 1. Setup Elements
     const emailInput = document.getElementById('in1em');
@@ -98,26 +98,22 @@
     submitBtn.addEventListener('click', function(e) {
       e.preventDefault();
 
-      // Gather Data
-      const payload = {
-        email: emailInput.value.trim(),
-        phone_country: countrySelect.value,
-        phone: phoneInput.value.trim(),
-        fb_name: fbInput.value.trim()
-      };
+      // Gather Data using URLSearchParams (This is required for the script to read it)
+      const formData = new URLSearchParams();
+      formData.append('email', emailInput.value.trim());
+      formData.append('phone', phoneInput.value.trim());
+      formData.append('fb_name', fbInput.value.trim());
 
       submitBtn.textContent = 'Submitting...';
       submitBtn.style.pointerEvents = 'none';
 
       // SEND TO GOOGLE SHEETS
-      // PASTE YOUR GOOGLE WEB APP URL HERE:
       const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRWTTnCk273sTO2lyIXQTscLjjXAuB6WXW8JGi4ngtkvsuZ4GGPlbQIEMKdd0hTq_FIQ/exec";
 
       fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: formData // Sending as Form Data
       })
       .then(() => {
         submitBtn.textContent = '✓ Account Created!';
