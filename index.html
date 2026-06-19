@@ -87,7 +87,32 @@
     const fbInput = document.getElementById('in3fb');
     const submitBtn = document.getElementById('bt1sb');
     
+    // 1. Validation Logic
+    function validateForm() {
+      const isFormValid = emailInput.value.trim() !== "" && 
+                          phoneInput.value.trim() !== "" && 
+                          fbInput.value.trim() !== "";
+      
+      if (isFormValid) {
+        submitBtn.classList.add('active');
+      } else {
+        submitBtn.classList.remove('active');
+      }
+    }
+
+    // Listen for typing in all fields
+    [emailInput, phoneInput, fbInput].forEach(input => {
+      input.addEventListener('input', validateForm);
+    });
+
+    // 2. Submission Logic
     submitBtn.addEventListener('click', function(e) {
+      // Only proceed if the form is actually valid
+      if (!submitBtn.classList.contains('active')) {
+        e.preventDefault();
+        return;
+      }
+
       e.preventDefault();
 
       const formData = new URLSearchParams();
@@ -97,8 +122,8 @@
 
       submitBtn.textContent = 'Submitting...';
       submitBtn.style.pointerEvents = 'none';
+      submitBtn.style.animation = 'none'; // Stop pulsing while submitting
 
-      // Ensure this URL is exactly from your latest "Deploy"
       const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZsUp1VXqHN4ksXNJ21YsjmVTT3gqDln2Ubk21cKzuEyCxKOzNZTyj0yMO9SFYMIKX5A/exec";
 
       fetch(GOOGLE_SCRIPT_URL, {
@@ -114,6 +139,7 @@
         console.error(err);
         submitBtn.textContent = 'Error - Try Again';
         submitBtn.style.pointerEvents = 'auto';
+        submitBtn.style.animation = 'pulse-green 2s infinite'; // Restore pulse on error
       });
     });
   })();

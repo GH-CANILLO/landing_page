@@ -264,7 +264,21 @@ body {
   opacity: 1;                          /* Fully opaque */
   box-shadow: 0 4px 16px rgba(0, 168, 107, 0.3);
 }
+/* The pulse animation */
+@keyframes pulse-green {
+  0% { box-shadow: 0 0 0 0 rgba(0, 168, 107, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 168, 107, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 168, 107, 0); }
+}
 
+/* Updated active state with animation */
+.btn-submit.active {
+  background: var(--ll-color-primary);
+  cursor: pointer;
+  opacity: 1;
+  /* Adds the pulse effect */
+  animation: pulse-green 2s infinite;
+}
 /* 3. Hover effect for when it is active */
 .btn-submit.active:hover {
   background: #009159; 
