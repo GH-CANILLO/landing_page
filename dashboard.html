@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>747LIVE – Signups Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #00A86B;
+      --green-light: #e6f7f1;
+      --red: #ef4444;
+      --bg: #0B1A3E;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --radius: 12px;
+      --input-bg: #f9fafb;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Inter", sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0B1A3E 0%, #0B1A3E 30%, #e8ecf1 100%);
+      padding: 24px 16px 40px;
+    }
+    .wrapper {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo { height: 66px; width: auto; object-fit: contain; border-radius: 8px; display: block; }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      overflow: hidden;
+      width: 100%;
+      animation: cardSlideUp 0.5s ease-out;
+    }
+    .card-header {
+      background: var(--green);
+      color: #fff;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .card-header-title { font-size: 15px; font-weight: 700; letter-spacing: 0.02em; }
+    .card-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+
+    /* ── Stats row ── */
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .stat-box {
+      background: var(--input-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      text-align: center;
+    }
+    .stat-number { font-size: 26px; font-weight: 700; color: var(--green); line-height: 1; }
+    .stat-label { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ── Search ── */
+    .search-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--input-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 0 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-wrap:focus-within {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(0,168,107,0.12);
+    }
+    .search-icon { width: 16px; height: 16px; opacity: 0.4; flex-shrink: 0; }
+    .search-input {
+      flex: 1; border: none; background: transparent;
+      padding: 11px 0; font-size: 14px; font-family: "Inter", sans-serif;
+      color: var(--text); outline: none;
+    }
+    .search-input::placeholder { color: #9ca3af; }
+    .clear-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 16px; color: var(--muted); padding: 2px; line-height: 1;
+      display: none;
+    }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; border-radius: 10px; border: 1.5px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    thead tr { background: var(--input-bg); }
+    thead th {
+      padding: 11px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      border-bottom: 1.5px solid var(--border);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+    thead th:hover { color: var(--text); }
+    thead th .sort-arrow { margin-left: 4px; opacity: 0.4; font-size: 10px; }
+    thead th.sorted .sort-arrow { opacity: 1; color: var(--green); }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f0fdf8; }
+    tbody td { padding: 12px 14px; color: var(--text); vertical-align: middle; }
+    td.timestamp { color: var(--muted); font-size: 12px; white-space: nowrap; }
+    td.email { font-weight: 500; word-break: break-all; }
+    td.phone { white-space: nowrap; }
+    td.fbname { color: var(--text); }
+    .no-data {
+      text-align: center; padding: 40px 20px;
+      color: var(--muted); font-size: 14px;
+    }
+    .row-num { color: var(--muted); font-size: 12px; font-weight: 600; }
+
+    /* ── Badges ── */
+    .today-badge {
+      display: inline-block; padding: 2px 8px;
+      background: var(--green-light); color: var(--green);
+      border-radius: 20px; font-size: 10px; font-weight: 700;
+      margin-left: 6px; vertical-align: middle;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      padding: 9px 16px; border: none; border-radius: 8px;
+      font-size: 13px; font-weight: 600; font-family: "Inter", sans-serif;
+      cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    }
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-green:hover { background: #009158; }
+    .btn-outline {
+      background: transparent; color: var(--green);
+      border: 1.5px solid var(--green);
+    }
+    .btn-outline:hover { background: var(--green-light); }
+    .btn-sm { padding: 7px 12px; font-size: 12px; }
+
+    /* ── Login ── */
+    #login-screen { width: 100%; max-width: 400px; }
+    .login-card { width: 100%; }
+    label { font-size: 13px; font-weight: 600; color: var(--muted); display: block; margin-bottom: 6px; }
+    input[type="password"] {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="password"]:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(0,168,107,0.12);
+    }
+    .btn-full { width: 100%; padding: 13px; font-size: 15px; }
+    .error-msg { font-size: 12px; color: var(--red); text-align: center; display: none; }
+
+    /* ── Footer ── */
+    .footer-bar {
+      display: flex; align-items: center; gap: 12px; width: 100%;
+      padding: 12px 18px; background: rgba(255,255,255,0.08);
+      border-radius: 10px; backdrop-filter: blur(6px);
+    }
+    .footer-bar img { width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0; }
+    .footer-bar p { font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+
+    .logout-btn {
+      background: none; border: none; font-size: 12px;
+      color: rgba(255,255,255,0.5); cursor: pointer;
+      text-decoration: underline; font-family: "Inter", sans-serif;
+    }
+    .logout-btn:hover { color: rgba(255,255,255,0.9); }
+
+    /* ── Spinner ── */
+    .spinner-wrap { text-align: center; padding: 40px; color: var(--muted); font-size: 14px; }
+    .spinner {
+      display: inline-block; width: 28px; height: 28px;
+      border: 3px solid rgba(0,168,107,0.2);
+      border-top-color: var(--green); border-radius: 50%;
+      animation: spin 0.7s linear infinite; margin-bottom: 10px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes cardSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .stat-number { font-size: 20px; }
+      .stat-label { font-size: 10px; }
+      table { font-size: 12px; }
+      tbody td { padding: 10px 10px; }
+      .hide-mobile { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <img src="https://i.imgur.com/3cmYibA.png" alt="Brand Logo" class="logo">
+
+  <!-- LOGIN -->
+  <div id="login-screen">
+    <div class="card login-card">
+      <div class="card-header">
+        <span class="card-header-title">Signups Dashboard – Login</span>
+      </div>
+      <div class="card-body">
+        <div>
+          <label for="pw-input">Admin Password</label>
+          <input type="password" id="pw-input" placeholder="Enter password" autocomplete="current-password">
+        </div>
+        <p id="login-error" class="error-msg">Incorrect password. Try again.</p>
+        <button class="btn btn-green btn-full" id="login-btn">Login</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard-screen" style="display:none; width:100%;">
+
+    <!-- Stats -->
+    <div class="stats-row" id="stats-row">
+      <div class="stat-box">
+        <div class="stat-number" id="stat-total">—</div>
+        <div class="stat-label">Total Signups</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" id="stat-today">—</div>
+        <div class="stat-label">Today</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" id="stat-week">—</div>
+        <div class="stat-label">This Week</div>
+      </div>
+    </div>
+
+    <!-- Table card -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-header-title">📋 All Signups</span>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-outline btn-sm" id="refresh-btn">↻ Refresh</button>
+          <button class="btn btn-green btn-sm" id="export-btn">⬇ Export CSV</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" class="search-input" id="search-input" placeholder="Search by email, phone, or name…">
+          <button class="clear-btn" id="clear-search">✕</button>
+        </div>
+
+        <div id="table-container">
+          <div class="spinner-wrap">
+            <div class="spinner"></div>
+            <p>Loading signups…</p>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <span id="result-count" style="font-size:12px;color:var(--muted);"></span>
+          <span style="font-size:11px;color:var(--muted);">Last updated: <span id="last-updated">—</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;">
+      <button class="logout-btn" id="logout-btn">Logout</button>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <img src="https://i.imgur.com/EP480b6.png" alt="PAGCOR Logo">
+    <p>747Live is officially operated and licensed by PAGCOR under COA No. OPG-24-100.</p>
+  </div>
+</div>
+
+<script>
+  // ── Config ──────────────────────────────────────────────
+  const ADMIN_PASSWORD = "747admin2024"; // ← same as admin.html
+  // Your Google Sheet ID (from the URL: /spreadsheets/d/THIS_PART/edit)
+  const SHEET_ID = "1AdUuXH3DvTaSXsTYVj8tpkzi-Arv2KpQ4hMOj9NrCeY";
+  // Sheet name (bottom tab name in Google Sheets)
+  const SHEET_NAME = "Sheet1";
+  // ────────────────────────────────────────────────────────
+
+  const loginScreen    = document.getElementById('login-screen');
+  const dashScreen     = document.getElementById('dashboard-screen');
+  const pwInput        = document.getElementById('pw-input');
+  const loginBtn       = document.getElementById('login-btn');
+  const loginError     = document.getElementById('login-error');
+  const searchInput    = document.getElementById('search-input');
+  const clearBtn       = document.getElementById('clear-search');
+  const tableContainer = document.getElementById('table-container');
+  const resultCount    = document.getElementById('result-count');
+  const lastUpdated    = document.getElementById('last-updated');
+
+  let allRows = [];
+  let sortCol = 0;
+  let sortAsc = false; // newest first by default
+
+  // ── Login ────────────────────────────────────────────────
+  function attemptLogin() {
+    if (pwInput.value === ADMIN_PASSWORD) {
+      loginScreen.style.display = 'none';
+      dashScreen.style.display = 'block';
+      loginError.style.display = 'none';
+      loadData();
+    } else {
+      loginError.style.display = 'block';
+      pwInput.value = '';
+    }
+  }
+  loginBtn.addEventListener('click', attemptLogin);
+  pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    dashScreen.style.display = 'none';
+    loginScreen.style.display = 'block';
+    pwInput.value = '';
+  });
+
+  // ── Load data from Google Sheets (public CSV export) ────
+  function loadData() {
+    tableContainer.innerHTML = '<div class="spinner-wrap"><div class="spinner"></div><p>Loading signups…</p></div>';
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(SHEET_NAME)}&t=${Date.now()}`;
+    fetch(url)
+      .then(res => res.text())
+      .then(csv => {
+        allRows = parseCSV(csv).filter(r => r[1] && r[1].trim()); // filter empty rows
+        lastUpdated.textContent = new Date().toLocaleTimeString();
+        updateStats();
+        renderTable(allRows);
+      })
+      .catch(err => {
+        tableContainer.innerHTML = `<div class="no-data">⚠️ Could not load data.<br><small>Make sure your Google Sheet is shared publicly (View access).<br>${err.message}</small></div>`;
+      });
+  }
+
+  // ── Simple CSV parser ────────────────────────────────────
+  function parseCSV(text) {
+    return text.trim().split('\n').map(line => {
+      const cols = [];
+      let cur = '', inQ = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (c === '"') { inQ = !inQ; }
+        else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+        else { cur += c; }
+      }
+      cols.push(cur.trim());
+      return cols;
+    });
+  }
+
+  // ── Stats ────────────────────────────────────────────────
+  function updateStats() {
+    const today = new Date().toLocaleDateString('en-PH', { timeZone: 'Asia/Manila' });
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    let todayCount = 0, weekCount = 0;
+
+    allRows.forEach(row => {
+      if (!row[0]) return;
+      const ts = new Date(row[0]);
+      const rowDate = ts.toLocaleDateString('en-PH', { timeZone: 'Asia/Manila' });
+      if (rowDate === today) todayCount++;
+      if (ts >= weekAgo) weekCount++;
+    });
+
+    document.getElementById('stat-total').textContent = allRows.length;
+    document.getElementById('stat-today').textContent = todayCount;
+    document.getElementById('stat-week').textContent  = weekCount;
+  }
+
+  // ── Render table ─────────────────────────────────────────
+  function renderTable(rows) {
+    if (!rows.length) {
+      tableContainer.innerHTML = '<div class="no-data">No signups found.</div>';
+      resultCount.textContent = '';
+      return;
+    }
+
+    const today = new Date().toLocaleDateString('en-PH', { timeZone: 'Asia/Manila' });
+
+    // Sort
+    const sorted = [...rows].sort((a, b) => {
+      const va = a[sortCol] || '', vb = b[sortCol] || '';
+      return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+
+    const cols = ['Timestamp', 'Email', 'Phone', 'Facebook Name'];
+    const colKeys = [0, 1, 3, 4]; // map col index to data index (col C is empty)
+
+    let html = `
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th style="width:36px;">#</th>
+            ${cols.map((c, i) => `
+              <th data-col="${i}" class="${sortCol === i ? 'sorted' : ''}">
+                ${c} <span class="sort-arrow">${sortCol === i ? (sortAsc ? '▲' : '▼') : '▲'}</span>
+              </th>`).join('')}
+          </tr></thead>
+          <tbody>
+    `;
+
+    sorted.forEach((row, idx) => {
+      const ts = row[0] || '';
+      const email = row[1] || '';
+      const phone = row[3] || '';
+      const fbname = row[4] || '';
+      const rowDate = ts ? new Date(ts).toLocaleDateString('en-PH', { timeZone: 'Asia/Manila' }) : '';
+      const isToday = rowDate === today;
+      const formattedTs = ts ? new Date(ts).toLocaleString('en-PH', {
+        timeZone: 'Asia/Manila', month: 'short', day: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      }) : '';
+
+      html += `<tr>
+        <td class="row-num">${idx + 1}</td>
+        <td class="timestamp">${formattedTs}${isToday ? '<span class="today-badge">Today</span>' : ''}</td>
+        <td class="email">${email}</td>
+        <td class="phone hide-mobile">${phone}</td>
+        <td class="fbname">${fbname}</td>
+      </tr>`;
+    });
+
+    html += '</tbody></table></div>';
+    tableContainer.innerHTML = html;
+    resultCount.textContent = `Showing ${sorted.length} of ${allRows.length} signups`;
+
+    // Sort headers
+    tableContainer.querySelectorAll('thead th[data-col]').forEach(th => {
+      th.addEventListener('click', () => {
+        const col = parseInt(th.dataset.col);
+        if (sortCol === col) sortAsc = !sortAsc;
+        else { sortCol = col; sortAsc = true; }
+        renderTable(getFilteredRows());
+      });
+    });
+  }
+
+  // ── Search ───────────────────────────────────────────────
+  function getFilteredRows() {
+    const q = searchInput.value.trim().toLowerCase();
+    if (!q) return allRows;
+    return allRows.filter(r =>
+      (r[1] || '').toLowerCase().includes(q) ||
+      (r[3] || '').toLowerCase().includes(q) ||
+      (r[4] || '').toLowerCase().includes(q)
+    );
+  }
+
+  searchInput.addEventListener('input', () => {
+    clearBtn.style.display = searchInput.value ? 'block' : 'none';
+    renderTable(getFilteredRows());
+  });
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    clearBtn.style.display = 'none';
+    renderTable(allRows);
+  });
+
+  // ── Refresh ──────────────────────────────────────────────
+  document.getElementById('refresh-btn').addEventListener('click', loadData);
+
+  // ── Export CSV ───────────────────────────────────────────
+  document.getElementById('export-btn').addEventListener('click', () => {
+    const rows = getFilteredRows();
+    const header = 'Timestamp,Email,Phone,Facebook Name\n';
+    const csv = header + rows.map(r => `"${r[0]}","${r[1]}","${r[3]}","${r[4]}"`).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `747live-signups-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+  });
+</script>
+</body>
+</html>
