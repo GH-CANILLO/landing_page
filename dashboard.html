@@ -193,6 +193,18 @@
       text-decoration: underline; font-family: "Inter", sans-serif;
     }
     .logout-btn:hover { color: rgba(255,255,255,0.9); }
+    .nav-row {
+      display: flex; gap: 10px; width: 100%;
+    }
+    .btn-nav {
+      flex: 1; padding: 10px; border-radius: 10px;
+      font-size: 13px; font-weight: 600; font-family: "Inter", sans-serif;
+      cursor: pointer; text-align: center; text-decoration: none;
+      transition: all 0.2s; border: 1.5px solid rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(6px); display: inline-block;
+    }
+    .btn-nav:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.7); }
 
     /* ── Spinner ── */
     .spinner-wrap { text-align: center; padding: 40px; color: var(--muted); font-size: 14px; }
@@ -292,6 +304,11 @@
     <div style="text-align:center;">
       <button class="logout-btn" id="logout-btn">Logout</button>
     </div>
+  </div>
+
+  <div class="nav-row">
+    <a href="index.html" class="btn-nav">📝 Sign Up Page</a>
+    <a href="admin.html" class="btn-nav">⚙️ Ad Manager</a>
   </div>
 
   <div class="footer-bar">

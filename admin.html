@@ -198,6 +198,17 @@
       cursor: pointer; text-decoration: underline; font-family: "Inter", sans-serif;
     }
     .settings-row button:hover { color: var(--text); }
+    .nav-row {
+      display: flex; gap: 10px; width: 100%; margin-top: 4px;
+    }
+    .btn-nav {
+      flex: 1; padding: 10px; border-radius: 10px;
+      font-size: 13px; font-weight: 600; font-family: "Inter", sans-serif;
+      cursor: pointer; text-align: center; text-decoration: none;
+      transition: all 0.2s; border: 1.5px solid var(--green);
+      color: var(--green); background: transparent; display: inline-block;
+    }
+    .btn-nav:hover { background: var(--green-light); }
   </style>
 </head>
 <body>
@@ -302,6 +313,10 @@
 
     <div style="text-align:center; margin-top: 4px;">
       <button class="logout-btn" id="logout-btn">Logout</button>
+    </div>
+    <div class="nav-row">
+      <a href="index.html" class="btn-nav">📝 Sign Up Page</a>
+      <a href="dashboard.html" class="btn-nav">📊 Dashboard</a>
     </div>
   </div>
 
