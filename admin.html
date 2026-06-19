@@ -38,15 +38,8 @@
       align-items: center;
       gap: 16px;
     }
-    .logo {
-      height: 52px;
-      width: auto;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-
-    /* ── Login Screen ── */
-    #login-screen, #admin-screen { width: 100%; }
+    .logo { height: 52px; width: auto; object-fit: contain; border-radius: 8px; }
+    #login-screen, #setup-screen, #admin-screen { width: 100%; }
     .card {
       background: var(--card);
       border-radius: var(--radius);
@@ -62,19 +55,8 @@
       font-weight: 700;
       letter-spacing: 0.02em;
     }
-    .card-body {
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--muted);
-      display: block;
-      margin-bottom: 6px;
-    }
+    .card-body { padding: 28px; display: flex; flex-direction: column; gap: 16px; }
+    label { font-size: 13px; font-weight: 600; color: var(--muted); display: block; margin-bottom: 6px; }
     input[type="password"], input[type="text"], input[type="url"] {
       width: 100%;
       background: var(--input-bg);
@@ -87,10 +69,7 @@
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    input:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(0,168,107,0.12);
-    }
+    input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(0,168,107,0.12); }
     .btn {
       width: 100%;
       padding: 13px;
@@ -102,26 +81,42 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .btn-green {
-      background: var(--green);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(0,168,107,0.3);
-    }
+    .btn-green { background: var(--green); color: #fff; box-shadow: 0 4px 14px rgba(0,168,107,0.3); }
     .btn-green:hover { background: #009158; }
-    .btn-red {
-      background: var(--red);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(239,68,68,0.25);
-    }
+    .btn-green:disabled { background: #98D7C2; cursor: not-allowed; box-shadow: none; }
+    .btn-red { background: var(--red); color: #fff; box-shadow: 0 4px 14px rgba(239,68,68,0.25); }
     .btn-red:hover { background: #dc2626; }
-    .error-msg {
-      font-size: 12px;
-      color: var(--red);
-      text-align: center;
-      display: none;
+    .btn-outline {
+      background: transparent;
+      color: var(--green);
+      border: 1.5px solid var(--green);
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: "Inter", sans-serif;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s;
     }
-
-    /* ── Admin Screen ── */
+    .btn-outline:hover { background: var(--green-light); }
+    .error-msg { font-size: 12px; color: var(--red); text-align: center; display: none; }
+    .info-box {
+      background: #f0fdf8;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 12.5px;
+      color: #065f46;
+      line-height: 1.7;
+    }
+    .info-box a { color: var(--green); font-weight: 600; }
+    .info-box code {
+      background: #d1fae5;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 11.5px;
+    }
     .section-title {
       font-size: 12px;
       font-weight: 700;
@@ -140,19 +135,8 @@
       align-items: center;
       justify-content: center;
     }
-    .current-ad-box img {
-      width: 100%;
-      height: auto;
-      display: block;
-      max-height: 220px;
-      object-fit: cover;
-    }
-    .no-ad-text {
-      font-size: 13px;
-      color: var(--muted);
-      padding: 24px;
-      text-align: center;
-    }
+    .current-ad-box img { width: 100%; height: auto; display: block; max-height: 220px; object-fit: cover; }
+    .no-ad-text { font-size: 13px; color: var(--muted); padding: 24px; text-align: center; }
     .status-badge {
       display: inline-block;
       padding: 3px 10px;
@@ -163,73 +147,99 @@
     }
     .badge-active { background: var(--green-light); color: var(--green); }
     .badge-none { background: #f3f4f6; color: var(--muted); }
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-    }
+    .divider { border: none; border-top: 1px solid var(--border); }
     .footer-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      padding: 12px 18px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 10px;
-      backdrop-filter: blur(6px);
+      display: flex; align-items: center; gap: 12px; width: 100%;
+      padding: 12px 18px; background: rgba(255,255,255,0.08);
+      border-radius: 10px; backdrop-filter: blur(6px);
     }
     .footer-bar img { width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0; }
     .footer-bar p { font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.5; }
     .logout-btn {
-      background: none;
-      border: none;
-      font-size: 12px;
-      color: rgba(255,255,255,0.5);
-      cursor: pointer;
-      text-decoration: underline;
-      font-family: "Inter", sans-serif;
-      margin-top: -4px;
+      background: none; border: none; font-size: 12px;
+      color: rgba(255,255,255,0.5); cursor: pointer;
+      text-decoration: underline; font-family: "Inter", sans-serif; margin-top: -4px;
     }
     .logout-btn:hover { color: rgba(255,255,255,0.9); }
     .success-toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--green);
-      color: #fff;
-      padding: 10px 22px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s;
-      white-space: nowrap;
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--green); color: #fff; padding: 10px 22px;
+      border-radius: 8px; font-size: 14px; font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2); opacity: 0;
+      pointer-events: none; transition: opacity 0.3s; white-space: nowrap;
     }
     .success-toast.show { opacity: 1; }
+    .error-toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--red); color: #fff; padding: 10px 22px;
+      border-radius: 8px; font-size: 14px; font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2); opacity: 0;
+      pointer-events: none; transition: opacity 0.3s; white-space: nowrap; z-index: 999;
+    }
+    .error-toast.show { opacity: 1; }
     .img-preview-wrap {
-      margin-top: 8px;
-      border-radius: 8px;
-      overflow: hidden;
-      display: none;
-      border: 1.5px solid var(--border);
+      margin-top: 8px; border-radius: 8px; overflow: hidden;
+      display: none; border: 1.5px solid var(--border);
     }
-    .img-preview-wrap img {
-      width: 100%;
-      height: auto;
-      max-height: 180px;
-      object-fit: cover;
-      display: block;
+    .img-preview-wrap img { width: 100%; height: auto; max-height: 180px; object-fit: cover; display: block; }
+    .spinner {
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .settings-row {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; color: var(--muted);
+    }
+    .settings-row button {
+      background: none; border: none; font-size: 12px; color: var(--muted);
+      cursor: pointer; text-decoration: underline; font-family: "Inter", sans-serif;
+    }
+    .settings-row button:hover { color: var(--text); }
   </style>
 </head>
 <body>
 <div class="wrapper">
   <img src="https://i.imgur.com/3cmYibA.png" alt="Brand Logo" class="logo">
 
-  <!-- LOGIN -->
-  <div id="login-screen">
+  <!-- SETUP SCREEN (first time only) -->
+  <div id="setup-screen" style="display:none;">
+    <div class="card">
+      <div class="card-header">One-Time Setup</div>
+      <div class="card-body">
+        <div class="info-box">
+          <strong>Connect to GitHub in 3 steps:</strong><br><br>
+          1. Go to <a href="https://github.com/settings/tokens/new" target="_blank">github.com/settings/tokens/new</a><br>
+          2. Give it any name (e.g. <code>747live-ad</code>)<br>
+          3. Under <strong>Repository permissions</strong>, set <strong>Contents → Read and write</strong><br>
+          4. Click <strong>Generate token</strong> and paste it below
+        </div>
+        <div>
+          <label for="setup-token">GitHub Personal Access Token</label>
+          <input type="password" id="setup-token" placeholder="github_pat_...">
+        </div>
+        <div>
+          <label for="setup-owner">GitHub Username (repo owner)</label>
+          <input type="text" id="setup-owner" placeholder="e.g. yourname">
+        </div>
+        <div>
+          <label for="setup-repo">Repository Name</label>
+          <input type="text" id="setup-repo" placeholder="e.g. 747live-signup">
+        </div>
+        <div>
+          <label for="setup-branch">Branch <span style="font-weight:400;color:var(--muted)">(usually main or master)</span></label>
+          <input type="text" id="setup-branch" placeholder="main" value="main">
+        </div>
+        <p id="setup-error" class="error-msg">Please fill in all fields.</p>
+        <button class="btn btn-green" id="setup-save-btn">Save & Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" style="display:none;">
     <div class="card">
       <div class="card-header">Ad Manager – Login</div>
       <div class="card-body">
@@ -239,60 +249,52 @@
         </div>
         <p id="login-error" class="error-msg">Incorrect password. Try again.</p>
         <button class="btn btn-green" id="login-btn">Login</button>
+        <div class="settings-row">
+          <span>Wrong repo?</span>
+          <button id="reset-setup-btn">Change GitHub settings</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ADMIN -->
+  <!-- ADMIN SCREEN -->
   <div id="admin-screen" style="display:none;">
     <div class="card">
       <div class="card-header">Ad Banner Manager</div>
       <div class="card-body">
 
-        <!-- Current status -->
         <div>
           <p class="section-title">Current Ad</p>
           <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
-            <span id="status-badge" class="status-badge badge-none">No Ad</span>
-            <span id="ad-link-display" style="font-size:12px; color:var(--muted); max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+            <span id="status-badge" class="status-badge badge-none">Loading...</span>
+            <span id="ad-link-display" style="font-size:12px; color:var(--muted); max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
           </div>
           <div class="current-ad-box" id="current-ad-box">
-            <p class="no-ad-text" id="no-ad-msg">No ad is currently set.</p>
+            <p class="no-ad-text" id="no-ad-msg">Loading...</p>
             <img id="current-ad-img" src="" alt="Current Ad" style="display:none;">
           </div>
         </div>
 
-        <button class="btn btn-red" id="delete-btn" style="display:none;">🗑 Generate "Remove Ad" Config</button>
+        <button class="btn btn-red" id="delete-btn" style="display:none;">🗑 Remove Ad Now</button>
 
         <hr class="divider">
 
-        <!-- Add new ad -->
         <div>
           <p class="section-title">Set New Ad</p>
           <div style="display:flex; flex-direction:column; gap:12px;">
             <div>
               <label for="img-url">Image URL <span style="font-weight:400;color:var(--muted)">(direct link to image)</span></label>
-              <input type="url" id="img-url" placeholder="https://example.com/banner.jpg">
+              <input type="url" id="img-url" placeholder="https://i.imgur.com/yourimage.png">
               <div class="img-preview-wrap" id="preview-wrap">
                 <img id="preview-img" src="" alt="Preview">
               </div>
             </div>
             <div>
-              <label for="link-url">Click URL <span style="font-weight:400;color:var(--muted)">(optional – where ad links to)</span></label>
+              <label for="link-url">Click URL <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
               <input type="url" id="link-url" placeholder="https://747live.com">
             </div>
-            <button class="btn btn-green" id="save-btn">Generate Ad Config</button>
+            <button class="btn btn-green" id="save-btn">🚀 Publish Ad Now</button>
           </div>
-        </div>
-
-        <div id="json-output-section" style="display:none;">
-          <hr class="divider">
-          <p class="section-title">Copy this into ad-config.json on GitHub</p>
-          <textarea id="json-output" readonly style="width:100%; min-height:110px; font-family:monospace; font-size:12.5px; background:var(--input-bg); border:1.5px solid var(--border); border-radius:10px; padding:12px; resize:vertical; color:var(--text);"></textarea>
-          <button class="btn btn-green" id="copy-json-btn" style="margin-top:10px;">Copy to Clipboard</button>
-          <p style="font-size:12px; color:var(--muted); margin-top:10px; line-height:1.6;">
-            Go to your GitHub repo → open <code>ad-config.json</code> → replace all its content with this → commit. Vercel will redeploy automatically and every visitor will see the new ad within ~1 minute.
-          </p>
         </div>
 
       </div>
@@ -310,141 +312,244 @@
 </div>
 
 <div class="success-toast" id="toast"></div>
+<div class="error-toast" id="error-toast"></div>
 
 <script>
-  // ── Config ──────────────────────────────────────────────
-  const ADMIN_PASSWORD = "747admin2024"; // ← Change this password!
-  const CONFIG_PATH = "ad-config.json";
+  // ── Admin Password ──────────────────────────────────────
+  const ADMIN_PASSWORD = "747admin2024"; // ← Change this!
+  const CONFIG_FILE    = "ad-config.json";
   // ────────────────────────────────────────────────────────
 
-  const loginScreen = document.getElementById('login-screen');
-  const adminScreen = document.getElementById('admin-screen');
-  const pwInput     = document.getElementById('pw-input');
-  const loginBtn    = document.getElementById('login-btn');
-  const loginError  = document.getElementById('login-error');
+  // Storage helpers
+  function saveSettings(obj) { localStorage.setItem('gh_settings', JSON.stringify(obj)); }
+  function loadSettings() {
+    try { return JSON.parse(localStorage.getItem('gh_settings')) || null; }
+    catch { return null; }
+  }
+  function clearSettings() { localStorage.removeItem('gh_settings'); }
 
-  const saveBtn      = document.getElementById('save-btn');
-  const deleteBtn     = document.getElementById('delete-btn');
-  const logoutBtn     = document.getElementById('logout-btn');
-  const imgUrlInput   = document.getElementById('img-url');
-  const linkUrlInput  = document.getElementById('link-url');
-  const previewWrap   = document.getElementById('preview-wrap');
-  const previewImg    = document.getElementById('preview-img');
-  const jsonSection   = document.getElementById('json-output-section');
-  const jsonOutput    = document.getElementById('json-output');
-  const copyJsonBtn   = document.getElementById('copy-json-btn');
+  // Elements
+  const setupScreen  = document.getElementById('setup-screen');
+  const loginScreen  = document.getElementById('login-screen');
+  const adminScreen  = document.getElementById('admin-screen');
 
   function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+  function showError(msg) {
+    const t = document.getElementById('error-toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 4000);
   }
 
-  function renderAdStatus() {
+  // ── GitHub API ──────────────────────────────────────────
+  async function ghGet(settings) {
+    const url = `https://api.github.com/repos/${settings.owner}/${settings.repo}/contents/${CONFIG_FILE}?ref=${settings.branch}`;
+    const res = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${settings.token}`,
+        'Accept': 'application/vnd.github+json'
+      }
+    });
+    if (!res.ok) {
+      if (res.status === 404) return null; // file doesn't exist yet
+      throw new Error(`GitHub error ${res.status}`);
+    }
+    return res.json(); // has .content (base64) and .sha
+  }
+
+  async function ghPut(settings, content, sha) {
+    const url = `https://api.github.com/repos/${settings.owner}/${settings.repo}/contents/${CONFIG_FILE}`;
+    const body = {
+      message: sha ? 'Update ad-config.json via Ad Manager' : 'Create ad-config.json via Ad Manager',
+      content: btoa(JSON.stringify(content, null, 2)),
+      branch: settings.branch
+    };
+    if (sha) body.sha = sha;
+    const res = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${settings.token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || `GitHub error ${res.status}`);
+    }
+    return res.json();
+  }
+
+  // ── Setup Screen ────────────────────────────────────────
+  document.getElementById('setup-save-btn').addEventListener('click', function() {
+    const token  = document.getElementById('setup-token').value.trim();
+    const owner  = document.getElementById('setup-owner').value.trim();
+    const repo   = document.getElementById('setup-repo').value.trim();
+    const branch = document.getElementById('setup-branch').value.trim() || 'main';
+    const errEl  = document.getElementById('setup-error');
+    if (!token || !owner || !repo) { errEl.style.display = 'block'; return; }
+    errEl.style.display = 'none';
+    saveSettings({ token, owner, repo, branch });
+    setupScreen.style.display = 'none';
+    loginScreen.style.display = 'block';
+  });
+
+  document.getElementById('reset-setup-btn').addEventListener('click', function() {
+    clearSettings();
+    loginScreen.style.display = 'none';
+    setupScreen.style.display = 'block';
+  });
+
+  // ── Login ───────────────────────────────────────────────
+  function attemptLogin() {
+    const pw = document.getElementById('pw-input').value;
+    const errEl = document.getElementById('login-error');
+    if (pw === ADMIN_PASSWORD) {
+      loginScreen.style.display = 'none';
+      adminScreen.style.display = 'block';
+      errEl.style.display = 'none';
+      renderAdStatus();
+    } else {
+      errEl.style.display = 'block';
+      document.getElementById('pw-input').value = '';
+    }
+  }
+  document.getElementById('login-btn').addEventListener('click', attemptLogin);
+  document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
+
+  document.getElementById('logout-btn').addEventListener('click', function() {
+    adminScreen.style.display = 'none';
+    loginScreen.style.display = 'block';
+    document.getElementById('pw-input').value = '';
+  });
+
+  // ── Render current ad status ────────────────────────────
+  async function renderAdStatus() {
     const badge   = document.getElementById('status-badge');
     const noMsg   = document.getElementById('no-ad-msg');
     const curImg  = document.getElementById('current-ad-img');
     const linkDsp = document.getElementById('ad-link-display');
+    const delBtn  = document.getElementById('delete-btn');
 
-    fetch(CONFIG_PATH + '?t=' + Date.now())
-      .then(res => res.json())
-      .then(ad => {
-        if (ad && ad.active && ad.imageUrl) {
-          badge.textContent = 'Active (live for all visitors)';
-          badge.className = 'status-badge badge-active';
-          noMsg.style.display = 'none';
-          curImg.src = ad.imageUrl;
-          curImg.style.display = 'block';
-          deleteBtn.style.display = 'block';
-          linkDsp.textContent = ad.linkUrl || '';
-        } else {
-          badge.textContent = 'No Ad Live';
-          badge.className = 'status-badge badge-none';
-          noMsg.style.display = 'block';
-          curImg.style.display = 'none';
-          deleteBtn.style.display = 'none';
-          linkDsp.textContent = '';
-        }
-      })
-      .catch(() => {
-        badge.textContent = 'Could not load ad-config.json';
+    badge.textContent = 'Loading...';
+    badge.className = 'status-badge badge-none';
+    noMsg.textContent = 'Loading...';
+    noMsg.style.display = 'block';
+    curImg.style.display = 'none';
+    delBtn.style.display = 'none';
+
+    try {
+      const settings = loadSettings();
+      const file = await ghGet(settings);
+      let ad = null;
+      if (file && file.content) {
+        ad = JSON.parse(atob(file.content.replace(/\n/g, '')));
+      }
+      if (ad && ad.active && ad.imageUrl) {
+        badge.textContent = '● Live';
+        badge.className = 'status-badge badge-active';
+        noMsg.style.display = 'none';
+        curImg.src = ad.imageUrl;
+        curImg.style.display = 'block';
+        delBtn.style.display = 'block';
+        linkDsp.textContent = ad.linkUrl || '';
+      } else {
+        badge.textContent = 'No Ad Live';
         badge.className = 'status-badge badge-none';
+        noMsg.textContent = 'No ad is currently set.';
         noMsg.style.display = 'block';
-        noMsg.textContent = 'ad-config.json not found yet — create it in your repo first.';
         curImg.style.display = 'none';
-        deleteBtn.style.display = 'none';
-      });
-  }
-
-  // Login
-  function attemptLogin() {
-    if (pwInput.value === ADMIN_PASSWORD) {
-      loginScreen.style.display = 'none';
-      adminScreen.style.display = 'block';
-      loginError.style.display = 'none';
-      renderAdStatus();
-    } else {
-      loginError.style.display = 'block';
-      pwInput.value = '';
-      pwInput.focus();
+        delBtn.style.display = 'none';
+        linkDsp.textContent = '';
+      }
+    } catch(err) {
+      badge.textContent = 'Error loading';
+      badge.className = 'status-badge badge-none';
+      noMsg.textContent = 'Could not load config. Check your GitHub settings.';
+      noMsg.style.display = 'block';
     }
   }
-  loginBtn.addEventListener('click', attemptLogin);
-  pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
 
-  // Preview image as user types URL
+  // ── Image URL preview ───────────────────────────────────
   let previewTimer;
-  imgUrlInput.addEventListener('input', function() {
+  document.getElementById('img-url').addEventListener('input', function() {
     clearTimeout(previewTimer);
     const url = this.value.trim();
-    if (!url) { previewWrap.style.display = 'none'; return; }
+    const wrap = document.getElementById('preview-wrap');
+    if (!url) { wrap.style.display = 'none'; return; }
     previewTimer = setTimeout(() => {
-      previewImg.onload = () => { previewWrap.style.display = 'block'; };
-      previewImg.onerror = () => { previewWrap.style.display = 'none'; };
-      previewImg.src = url;
+      const img = document.getElementById('preview-img');
+      img.onload = () => { wrap.style.display = 'block'; };
+      img.onerror = () => { wrap.style.display = 'none'; };
+      img.src = url;
     }, 600);
   });
 
-  function showGeneratedJson(obj) {
-    jsonOutput.value = JSON.stringify(obj, null, 2);
-    jsonSection.style.display = 'block';
-    jsonOutput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
+  // ── Publish ad ──────────────────────────────────────────
+  document.getElementById('save-btn').addEventListener('click', async function() {
+    const imageUrl = document.getElementById('img-url').value.trim();
+    const linkUrl  = document.getElementById('link-url').value.trim();
+    if (!imageUrl) { document.getElementById('img-url').focus(); return; }
 
-  // Generate "save" JSON
-  saveBtn.addEventListener('click', function() {
-    const imageUrl = imgUrlInput.value.trim();
-    const linkUrl  = linkUrlInput.value.trim();
-    if (!imageUrl) { imgUrlInput.focus(); return; }
+    const btn = this;
+    btn.innerHTML = '<span class="spinner"></span>Publishing...';
+    btn.disabled = true;
 
-    showGeneratedJson({ active: true, imageUrl: imageUrl, linkUrl: linkUrl });
-    showToast('Config generated — copy it into GitHub');
+    try {
+      const settings = loadSettings();
+      const file = await ghGet(settings);
+      const sha = file ? file.sha : undefined;
+      await ghPut(settings, { active: true, imageUrl, linkUrl }, sha);
+      showToast('✓ Ad is live! Updates in ~1 min.');
+      btn.innerHTML = '✓ Published!';
+      setTimeout(() => {
+        btn.innerHTML = '🚀 Publish Ad Now';
+        btn.disabled = false;
+      }, 3000);
+      document.getElementById('img-url').value = '';
+      document.getElementById('link-url').value = '';
+      document.getElementById('preview-wrap').style.display = 'none';
+      setTimeout(renderAdStatus, 2000);
+    } catch(err) {
+      showError('Error: ' + err.message);
+      btn.innerHTML = '🚀 Publish Ad Now';
+      btn.disabled = false;
+    }
   });
 
-  // Generate "remove" JSON
-  deleteBtn.addEventListener('click', function() {
-    showGeneratedJson({ active: false, imageUrl: "", linkUrl: "" });
-    showToast('Config generated — copy it into GitHub to remove the ad');
+  // ── Remove ad ───────────────────────────────────────────
+  document.getElementById('delete-btn').addEventListener('click', async function() {
+    if (!confirm('Remove the current ad?')) return;
+    const btn = this;
+    btn.innerHTML = '<span class="spinner"></span>Removing...';
+    btn.disabled = true;
+    try {
+      const settings = loadSettings();
+      const file = await ghGet(settings);
+      const sha = file ? file.sha : undefined;
+      await ghPut(settings, { active: false, imageUrl: '', linkUrl: '' }, sha);
+      showToast('✓ Ad removed.');
+      btn.innerHTML = '🗑 Remove Ad Now';
+      btn.disabled = false;
+      setTimeout(renderAdStatus, 2000);
+    } catch(err) {
+      showError('Error: ' + err.message);
+      btn.innerHTML = '🗑 Remove Ad Now';
+      btn.disabled = false;
+    }
   });
 
-  // Copy to clipboard
-  copyJsonBtn.addEventListener('click', function() {
-    jsonOutput.select();
-    navigator.clipboard.writeText(jsonOutput.value).then(() => {
-      showToast('✓ Copied to clipboard');
-    }).catch(() => {
-      document.execCommand('copy');
-      showToast('✓ Copied to clipboard');
-    });
-  });
-
-  // Logout
-  logoutBtn.addEventListener('click', function() {
-    adminScreen.style.display = 'none';
+  // ── Boot ────────────────────────────────────────────────
+  const settings = loadSettings();
+  if (settings && settings.token && settings.owner && settings.repo) {
     loginScreen.style.display = 'block';
-    pwInput.value = '';
-  });
+  } else {
+    setupScreen.style.display = 'block';
+  }
 </script>
 </body>
 </html>
