@@ -80,292 +80,56 @@
         <p id="ft1tx" class="footer-text">747Live is officially operated and licensed by PAGCOR under COA No. OPG-24-100.</p>
       </div>
     </div>
-    <script id="ioe9b">
-      (function() {
-        const emailInput = document.getElementById('in1em');
-        const phoneInput = document.getElementById('in2ph');
-        const fbInput = document.getElementById('in3fb');
-        const countrySelect = document.getElementById('sl1cc');
-        const submitBtn = document.getElementById('bt1sb');
-        const flagEmoji = document.getElementById('fl1em');
+   <script id="main-form-handler">
+  (function() {
+    // 1. Setup Elements
+    const emailInput = document.getElementById('in1em');
+    const phoneInput = document.getElementById('in2ph');
+    const fbInput = document.getElementById('in3fb');
+    const countrySelect = document.getElementById('sl1cc');
+    const submitBtn = document.getElementById('bt1sb');
+    const flagEmoji = document.getElementById('fl1em');
+    
+    // 2. Logic: Update Flag on change
+    const flagMap = { '+63': '🇵🇭', '+1': '🇺🇸', '+44': '🇬🇧', '+61': '🇦🇺', '+81': '🇯🇵', '+82': '🇰🇷', '+86': '🇨🇳', '+91': '🇮🇳', '+65': '🇸🇬', '+60': '🇲🇾', '+66': '🇹🇭', '+84': '🇻🇳', '+62': '🇮🇩', '+49': '🇩🇪', '+33': '🇫🇷' };
+    countrySelect.addEventListener('change', () => flagEmoji.textContent = flagMap[countrySelect.value] || '🏳️');
 
-        const flagMap = {
-          '+63': '🇵🇭',
-          '+1': '🇺🇸',
-          '+44': '🇬🇧',
-          '+61': '🇦🇺',
-          '+81': '🇯🇵',
-          '+82': '🇰🇷',
-          '+86': '🇨🇳',
-          '+91': '🇮🇳',
-          '+65': '🇸🇬',
-          '+60': '🇲🇾',
-          '+66': '🇹🇭',
-          '+84': '🇻🇳',
-          '+62': '🇮🇩',
-          '+49': '🇩🇪',
-          '+33': '🇫🇷'
-        };
+    // 3. Logic: Form Submission
+    submitBtn.addEventListener('click', function(e) {
+      e.preventDefault();
 
-        countrySelect.addEventListener('change', function() {
-          flagEmoji.textContent = flagMap[this.value] || '🏳️';
-        });
+      // Gather Data
+      const payload = {
+        email: emailInput.value.trim(),
+        phone_country: countrySelect.value,
+        phone: phoneInput.value.trim(),
+        fb_name: fbInput.value.trim()
+      };
 
-        function checkFormValidity() {
-          const emailVal = emailInput.value.trim();
-          const phoneVal = phoneInput.value.trim();
-          const fbVal = fbInput.value.trim();
-          const isValid = emailVal.length > 0 && phoneVal.length > 0 && fbVal.length > 0;
-          if (isValid) {
-            submitBtn.classList.add('active');
-          } else {
-            submitBtn.classList.remove('active');
-          }
-        }
+      submitBtn.textContent = 'Submitting...';
+      submitBtn.style.pointerEvents = 'none';
 
-        emailInput.addEventListener('input', checkFormValidity);
-        phoneInput.addEventListener('input', checkFormValidity);
-        fbInput.addEventListener('input', checkFormValidity);
+      // SEND TO GOOGLE SHEETS
+      // PASTE YOUR GOOGLE WEB APP URL HERE:
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwRWTTnCk273sTO2lyIXQTscLjjXAuB6WXW8JGi4ngtkvsuZ4GGPlbQIEMKdd0hTq_FIQ/exec";
 
-        submitBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          if (!submitBtn.classList.contains('active')) return;
-
-          const payload = {
-            email: emailInput.value.trim(),
-            phone_country: countrySelect.value,
-            phone: phoneInput.value.trim(),
-            fb_name: fbInput.value.trim()
-          };
-
-          submitBtn.textContent = 'Submitting...';
-          submitBtn.style.pointerEvents = 'none';
-
-          document.dispatchEvent(new CustomEvent('ll-custom-form-submit', {
-            detail: payload
-          }));
-
-          setTimeout(function() {
-            submitBtn.textContent = '✓ Account Created!';
-            submitBtn.style.background = '#009159';
-          }, 2000);
-        });
-
-        // Tab switching visual feedback
-        const loginTab = document.getElementById('tb1lg');
-        const signupTab = document.getElementById('tb2sg');
-
-        loginTab.addEventListener('click', function(e) {
-          e.preventDefault();
-          loginTab.style.background = 'var(--ll-color-primary)';
-          loginTab.style.color = '#fff';
-          signupTab.style.background = 'var(--ll-color-tab-inactive)';
-          signupTab.style.color = 'var(--ll-color-text-primary)';
-        });
-
-        signupTab.addEventListener('click', function(e) {
-          e.preventDefault();
-          signupTab.style.background = 'var(--ll-color-primary)';
-          signupTab.style.color = '#fff';
-          loginTab.style.background = 'var(--ll-color-tab-inactive)';
-          loginTab.style.color = 'var(--ll-color-text-primary)';
-        });
-      })();
-
-    </script>
-    <script id="ioe9b-2">
-      (function() {
-        const emailInput = document.getElementById('in1em');
-        const phoneInput = document.getElementById('in2ph');
-        const fbInput = document.getElementById('in3fb');
-        const countrySelect = document.getElementById('sl1cc');
-        const submitBtn = document.getElementById('bt1sb');
-        const flagEmoji = document.getElementById('fl1em');
-        const emailError = document.getElementById('er1em');
-        const phoneError = document.getElementById('er2ph');
-
-        const flagMap = {
-          '+63': '🇵🇭', '+1': '🇺🇸', '+44': '🇬🇧', '+61': '🇦🇺',
-          '+81': '🇯🇵', '+82': '🇰🇷', '+86': '🇨🇳', '+91': '🇮🇳',
-          '+65': '🇸🇬', '+60': '🇲🇾', '+66': '🇹🇭', '+84': '🇻🇳',
-          '+62': '🇮🇩', '+49': '🇩🇪', '+33': '🇫🇷'
-        };
-
-        countrySelect.addEventListener('change', function() {
-          flagEmoji.textContent = flagMap[this.value] || '🏳️';
-        });
-
-        function isValidEmail(email) {
-          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        function isValidPhone(phone) {
-          return /^9\d{9}$/.test(phone);
-        }
-
-        function clearError(inputWrap, errorEl) {
-          inputWrap.classList.remove('error');
-          errorEl.style.display = 'none';
-        }
-
-        function showError(inputWrap, errorEl) {
-          inputWrap.classList.add('error');
-          errorEl.style.display = 'block';
-        }
-
-        emailInput.addEventListener('input', function() {
-          var val = emailInput.value.trim();
-          if (val.length > 0 && !isValidEmail(val)) {
-            showError(document.getElementById('iw1em'), emailError);
-          } else {
-            clearError(document.getElementById('iw1em'), emailError);
-          }
-          checkFormValidity();
-        });
-
-        phoneInput.addEventListener('input', function() {
-          this.value = this.value.replace(/\D/g, '');
-          var val = phoneInput.value.trim();
-          if (val.length > 0 && !isValidPhone(val)) {
-            showError(document.getElementById('pw2ph'), phoneError);
-          } else {
-            clearError(document.getElementById('pw2ph'), phoneError);
-          }
-          checkFormValidity();
-        });
-
-        fbInput.addEventListener('input', checkFormValidity);
-
-        function checkFormValidity() {
-          var emailVal = emailInput.value.trim();
-          var phoneVal = phoneInput.value.trim();
-          var fbVal = fbInput.value.trim();
-          var isValid = isValidEmail(emailVal) && isValidPhone(phoneVal) && fbVal.length > 0;
-          if (isValid) {
-            submitBtn.classList.add('active');
-          } else {
-            submitBtn.classList.remove('active');
-          }
-        }
-
-        submitBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          if (!submitBtn.classList.contains('active')) return;
-
-          var payload = {
-            email: emailInput.value.trim(),
-            phone_country: countrySelect.value,
-            phone: phoneInput.value.trim(),
-            fb_name: fbInput.value.trim()
-          };
-
-          submitBtn.textContent = 'Submitting...';
-          submitBtn.style.pointerEvents = 'none';
-
-          document.dispatchEvent(new CustomEvent('ll-custom-form-submit', {
-            detail: payload
-          }));
-
-          setTimeout(function() {
-            submitBtn.textContent = '✓ Account Created!';
-            submitBtn.style.background = '#009159';
-          }, 2000);
-        });
-      })();
-
-    </script>
-    <script id="ioe9b-3">
-      (function() {
-        const emailInput = document.getElementById('in1em');
-        const phoneInput = document.getElementById('in2ph');
-        const fbInput = document.getElementById('in3fb');
-        const countrySelect = document.getElementById('sl1cc');
-        const submitBtn = document.getElementById('bt1sb');
-        const flagEmoji = document.getElementById('fl1em');
-
-        const flagMap = {
-          '+63': '🇵🇭',
-          '+1': '🇺🇸',
-          '+44': '🇬🇧',
-          '+61': '🇦🇺',
-          '+81': '🇯🇵',
-          '+82': '🇰🇷',
-          '+86': '🇨🇳',
-          '+91': '🇮🇳',
-          '+65': '🇸🇬',
-          '+60': '🇲🇾',
-          '+66': '🇹🇭',
-          '+84': '🇻🇳',
-          '+62': '🇮🇩',
-          '+49': '🇩🇪',
-          '+33': '🇫🇷'
-        };
-
-        countrySelect.addEventListener('change', function() {
-          flagEmoji.textContent = flagMap[this.value] || '🏳️';
-        });
-
-        function checkFormValidity() {
-          const emailVal = emailInput.value.trim();
-          const phoneVal = phoneInput.value.trim();
-          const fbVal = fbInput.value.trim();
-          const isValid = emailVal.length > 0 && phoneVal.length > 0 && fbVal.length > 0;
-          if (isValid) {
-            submitBtn.classList.add('active');
-          } else {
-            submitBtn.classList.remove('active');
-          }
-        }
-
-        emailInput.addEventListener('input', checkFormValidity);
-        phoneInput.addEventListener('input', checkFormValidity);
-        fbInput.addEventListener('input', checkFormValidity);
-
-        submitBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          if (!submitBtn.classList.contains('active')) return;
-
-          const payload = {
-            email: emailInput.value.trim(),
-            phone_country: countrySelect.value,
-            phone: phoneInput.value.trim(),
-            fb_name: fbInput.value.trim()
-          };
-
-          submitBtn.textContent = 'Submitting...';
-          submitBtn.style.pointerEvents = 'none';
-
-          document.dispatchEvent(new CustomEvent('ll-custom-form-submit', {
-            detail: payload
-          }));
-
-          setTimeout(function() {
-            submitBtn.textContent = '✓ Account Created!';
-            submitBtn.style.background = '#009159';
-          }, 2000);
-        });
-
-        // Tab switching visual feedback
-        const loginTab = document.getElementById('tb1lg');
-        const signupTab = document.getElementById('tb2sg');
-
-        loginTab.addEventListener('click', function(e) {
-          e.preventDefault();
-          loginTab.style.background = 'var(--ll-color-primary)';
-          loginTab.style.color = '#fff';
-          signupTab.style.background = 'var(--ll-color-tab-inactive)';
-          signupTab.style.color = 'var(--ll-color-text-primary)';
-        });
-
-        signupTab.addEventListener('click', function(e) {
-          e.preventDefault();
-          signupTab.style.background = 'var(--ll-color-primary)';
-          signupTab.style.color = '#fff';
-          loginTab.style.background = 'var(--ll-color-tab-inactive)';
-          loginTab.style.color = 'var(--ll-color-text-primary)';
-        });
-      })();
-
-    </script>
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(() => {
+        submitBtn.textContent = '✓ Account Created!';
+        submitBtn.style.background = '#009159';
+      })
+      .catch(err => {
+        console.error(err);
+        submitBtn.textContent = 'Error - Try Again';
+        submitBtn.style.pointerEvents = 'auto';
+      });
+    });
+  })();
+</script>
   </body>
 </html>
