@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>747LIVE – Ad Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #00A86B;
+      --green-light: #e6f7f1;
+      --red: #ef4444;
+      --red-light: #fef2f2;
+      --bg: #0B1A3E;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --radius: 12px;
+      --input-bg: #f9fafb;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Inter", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0B1A3E 0%, #0B1A3E 30%, #e8ecf1 100%);
+      padding: 24px 16px;
+    }
+    .wrapper {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    /* ── Login Screen ── */
+    #login-screen, #admin-screen { width: 100%; }
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      overflow: hidden;
+    }
+    .card-header {
+      background: var(--green);
+      color: #fff;
+      text-align: center;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .card-body {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+    input[type="password"], input[type="text"], input[type="url"] {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(0,168,107,0.12);
+    }
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: "Inter", sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-green {
+      background: var(--green);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(0,168,107,0.3);
+    }
+    .btn-green:hover { background: #009158; }
+    .btn-red {
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(239,68,68,0.25);
+    }
+    .btn-red:hover { background: #dc2626; }
+    .error-msg {
+      font-size: 12px;
+      color: var(--red);
+      text-align: center;
+      display: none;
+    }
+
+    /* ── Admin Screen ── */
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .current-ad-box {
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--input-bg);
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .current-ad-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-height: 220px;
+      object-fit: cover;
+    }
+    .no-ad-text {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 24px;
+      text-align: center;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .badge-active { background: var(--green-light); color: var(--green); }
+    .badge-none { background: #f3f4f6; color: var(--muted); }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+    .footer-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 12px 18px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+      backdrop-filter: blur(6px);
+    }
+    .footer-bar img { width: 32px; height: 32px; border-radius: 6px; flex-shrink: 0; }
+    .footer-bar p { font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+    .logout-btn {
+      background: none;
+      border: none;
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      text-decoration: underline;
+      font-family: "Inter", sans-serif;
+      margin-top: -4px;
+    }
+    .logout-btn:hover { color: rgba(255,255,255,0.9); }
+    .success-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--green);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+    }
+    .success-toast.show { opacity: 1; }
+    .img-preview-wrap {
+      margin-top: 8px;
+      border-radius: 8px;
+      overflow: hidden;
+      display: none;
+      border: 1.5px solid var(--border);
+    }
+    .img-preview-wrap img {
+      width: 100%;
+      height: auto;
+      max-height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <img src="https://i.imgur.com/3cmYibA.png" alt="Brand Logo" class="logo">
+
+  <!-- LOGIN -->
+  <div id="login-screen">
+    <div class="card">
+      <div class="card-header">Ad Manager – Login</div>
+      <div class="card-body">
+        <div>
+          <label for="pw-input">Admin Password</label>
+          <input type="password" id="pw-input" placeholder="Enter password" autocomplete="current-password">
+        </div>
+        <p id="login-error" class="error-msg">Incorrect password. Try again.</p>
+        <button class="btn btn-green" id="login-btn">Login</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="admin-screen" style="display:none;">
+    <div class="card">
+      <div class="card-header">Ad Banner Manager</div>
+      <div class="card-body">
+
+        <!-- Current status -->
+        <div>
+          <p class="section-title">Current Ad</p>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <span id="status-badge" class="status-badge badge-none">No Ad</span>
+            <span id="ad-link-display" style="font-size:12px; color:var(--muted); max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"></span>
+          </div>
+          <div class="current-ad-box" id="current-ad-box">
+            <p class="no-ad-text" id="no-ad-msg">No ad is currently set.</p>
+            <img id="current-ad-img" src="" alt="Current Ad" style="display:none;">
+          </div>
+        </div>
+
+        <button class="btn btn-red" id="delete-btn" style="display:none;">🗑 Remove Ad Banner</button>
+
+        <hr class="divider">
+
+        <!-- Add new ad -->
+        <div>
+          <p class="section-title">Set New Ad</p>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div>
+              <label for="img-url">Image URL <span style="font-weight:400;color:var(--muted)">(direct link to image)</span></label>
+              <input type="url" id="img-url" placeholder="https://example.com/banner.jpg">
+              <div class="img-preview-wrap" id="preview-wrap">
+                <img id="preview-img" src="" alt="Preview">
+              </div>
+            </div>
+            <div>
+              <label for="link-url">Click URL <span style="font-weight:400;color:var(--muted)">(optional – where ad links to)</span></label>
+              <input type="url" id="link-url" placeholder="https://747live.com">
+            </div>
+            <button class="btn btn-green" id="save-btn">Save Ad Banner</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top: 4px;">
+      <button class="logout-btn" id="logout-btn">Logout</button>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <img src="https://i.imgur.com/EP480b6.png" alt="PAGCOR Logo">
+    <p>747Live is officially operated and licensed by PAGCOR under COA No. OPG-24-100.</p>
+  </div>
+</div>
+
+<div class="success-toast" id="toast"></div>
+
+<script>
+  // ── Config ──────────────────────────────────────────────
+  const ADMIN_PASSWORD = "747admin2024"; // ← Change this password!
+  const STORAGE_KEY = "747live_ad";
+  // ────────────────────────────────────────────────────────
+
+  const loginScreen = document.getElementById('login-screen');
+  const adminScreen = document.getElementById('admin-screen');
+  const pwInput     = document.getElementById('pw-input');
+  const loginBtn    = document.getElementById('login-btn');
+  const loginError  = document.getElementById('login-error');
+
+  const saveBtn     = document.getElementById('save-btn');
+  const deleteBtn   = document.getElementById('delete-btn');
+  const logoutBtn   = document.getElementById('logout-btn');
+  const imgUrlInput = document.getElementById('img-url');
+  const linkUrlInput= document.getElementById('link-url');
+  const previewWrap = document.getElementById('preview-wrap');
+  const previewImg  = document.getElementById('preview-img');
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function renderAdStatus() {
+    try {
+      var ad = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      const badge   = document.getElementById('status-badge');
+      const noMsg   = document.getElementById('no-ad-msg');
+      const curImg  = document.getElementById('current-ad-img');
+      const linkDsp = document.getElementById('ad-link-display');
+
+      if (ad && ad.imageUrl) {
+        badge.textContent = 'Active';
+        badge.className = 'status-badge badge-active';
+        noMsg.style.display = 'none';
+        curImg.src = ad.imageUrl;
+        curImg.style.display = 'block';
+        deleteBtn.style.display = 'block';
+        linkDsp.textContent = ad.linkUrl || '';
+      } else {
+        badge.textContent = 'No Ad';
+        badge.className = 'status-badge badge-none';
+        noMsg.style.display = 'block';
+        curImg.style.display = 'none';
+        deleteBtn.style.display = 'none';
+        linkDsp.textContent = '';
+      }
+    } catch(e) {}
+  }
+
+  // Login
+  function attemptLogin() {
+    if (pwInput.value === ADMIN_PASSWORD) {
+      loginScreen.style.display = 'none';
+      adminScreen.style.display = 'block';
+      loginError.style.display = 'none';
+      renderAdStatus();
+    } else {
+      loginError.style.display = 'block';
+      pwInput.value = '';
+      pwInput.focus();
+    }
+  }
+  loginBtn.addEventListener('click', attemptLogin);
+  pwInput.addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
+
+  // Preview image as user types URL
+  let previewTimer;
+  imgUrlInput.addEventListener('input', function() {
+    clearTimeout(previewTimer);
+    const url = this.value.trim();
+    if (!url) { previewWrap.style.display = 'none'; return; }
+    previewTimer = setTimeout(() => {
+      previewImg.onload = () => { previewWrap.style.display = 'block'; };
+      previewImg.onerror = () => { previewWrap.style.display = 'none'; };
+      previewImg.src = url;
+    }, 600);
+  });
+
+  // Save
+  saveBtn.addEventListener('click', function() {
+    const imageUrl = imgUrlInput.value.trim();
+    const linkUrl  = linkUrlInput.value.trim();
+    if (!imageUrl) { imgUrlInput.focus(); return; }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ imageUrl, linkUrl }));
+    renderAdStatus();
+    imgUrlInput.value = '';
+    linkUrlInput.value = '';
+    previewWrap.style.display = 'none';
+    showToast('✓ Ad banner saved!');
+  });
+
+  // Delete
+  deleteBtn.addEventListener('click', function() {
+    if (!confirm('Remove the current ad banner?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    renderAdStatus();
+    showToast('Ad banner removed.');
+  });
+
+  // Logout
+  logoutBtn.addEventListener('click', function() {
+    adminScreen.style.display = 'none';
+    loginScreen.style.display = 'block';
+    pwInput.value = '';
+  });
+</script>
+</body>
+</html>

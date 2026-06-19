@@ -1,4 +1,3 @@
-
 <html>
   <head>
     <meta charset="UTF-8">
@@ -11,7 +10,7 @@
   <body>
     <div id="pw1rp" data-ll-name="Page Wrapper" class="page-wrapper">
       <div id="lg0ar" data-ll-name="Logo Area" class="logo-area">
-        <img id="lg0im" src="https://imagedelivery.net/c_gViAg48Noh05UnSpa2Mw/cc20493d-58ef-43f6-2895-3fbd5fa66300/format=webp,w=325,h=227" alt="Brand Logo" class="logo-img">
+        <img id="lg0im" src="https://i.imgur.com/3cmYibA.png" alt="Brand Logo" class="logo-img">
       </div>
       <div id="cd1mn" data-ll-name="Signup Card" class="card">
         <div id="tb1rw" data-ll-name="Card Header" class="card-header">
@@ -75,8 +74,13 @@
           </p>
         </div>
       </div>
+      <div id="ad1bn" class="ad-banner" style="display:none;">
+        <a id="ad1lk" href="#" target="_blank" rel="noopener">
+          <img id="ad1im" src="" alt="Advertisement" class="ad-banner-img">
+        </a>
+      </div>
       <div id="ft1br" data-ll-name="Footer Disclaimer" class="footer-bar">
-        <img id="ft1lg" src="https://imagedelivery.net/c_gViAg48Noh05UnSpa2Mw/17a2570f-4ee2-4d4f-e10b-eb1d0f87f100/format=webp,w=222,h=222" alt="PAGCOR Logo" class="footer-logo">
+        <img id="ft1lg" src="https://i.imgur.com/EP480b6.png" alt="PAGCOR Logo" class="footer-logo">
         <p id="ft1tx" class="footer-text">747Live is officially operated and licensed by PAGCOR under COA No. OPG-24-100.</p>
       </div>
     </div>
@@ -144,5 +148,24 @@
     });
   })();
 </script>
-  </body>
+  <script id="ad-banner-loader">
+  (function() {
+    try {
+      var ad = JSON.parse(localStorage.getItem('747live_ad') || 'null');
+      if (ad && ad.imageUrl) {
+        var banner = document.getElementById('ad1bn');
+        var img = document.getElementById('ad1im');
+        var link = document.getElementById('ad1lk');
+        img.src = ad.imageUrl;
+        if (ad.linkUrl) {
+          link.href = ad.linkUrl;
+        } else {
+          link.style.pointerEvents = 'none';
+        }
+        banner.style.display = 'block';
+      }
+    } catch(e) {}
+  })();
+</script>
+</body>
 </html>
