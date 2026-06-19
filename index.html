@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>747LIVE-Signup</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
@@ -31,21 +31,21 @@
               <div id="cs1wr" class="country-select-wrap">
                 <span id="fl1em" class="flag-emoji">🇵🇭</span>
                 <select id="sl1cc" name="phone_country" aria-label="Country Code" class="country-select">
-                  <option id="iq1bx" value="+63" selected="true">+63</option>
-                  <option id="izp9e" value="+1">+1</option>
-                  <option id="i1tsc" value="+44">+44</option>
-                  <option id="ibvrg" value="+61">+61</option>
-                  <option id="iyyzs" value="+81">+81</option>
-                  <option id="i07kd" value="+82">+82</option>
-                  <option id="izx29" value="+86">+86</option>
-                  <option id="ijvcn" value="+91">+91</option>
-                  <option id="ib0m5" value="+65">+65</option>
-                  <option id="il3xj" value="+60">+60</option>
-                  <option id="ia7xq" value="+66">+66</option>
-                  <option id="igt4a" value="+84">+84</option>
-                  <option id="iygz2" value="+62">+62</option>
-                  <option id="iqhiz" value="+49">+49</option>
-                  <option id="itj2d" value="+33">+33</option>
+                  <option value="+63" selected="true">+63</option>
+                  <option value="+1">+1</option>
+                  <option value="+44">+44</option>
+                  <option value="+61">+61</option>
+                  <option value="+81">+81</option>
+                  <option value="+82">+82</option>
+                  <option value="+86">+86</option>
+                  <option value="+91">+91</option>
+                  <option value="+65">+65</option>
+                  <option value="+60">+60</option>
+                  <option value="+66">+66</option>
+                  <option value="+84">+84</option>
+                  <option value="+62">+62</option>
+                  <option value="+49">+49</option>
+                  <option value="+33">+33</option>
                 </select>
                 <img id="ic2ar" src="https://icons.ll-assets.com/lucide/chevron-down.svg?color=%236b7280" alt="Arrow" width="14" height="14" class="select-arrow">
               </div>
@@ -84,90 +84,115 @@
         <p id="ft1tx" class="footer-text">747Live is officially operated and licensed by PAGCOR under COA No. OPG-24-100.</p>
       </div>
     </div>
- <script id="main-form-handler">
-  (function() {
-    const emailInput = document.getElementById('in1em');
-    const phoneInput = document.getElementById('in2ph');
-    const fbInput = document.getElementById('in3fb');
-    const submitBtn = document.getElementById('bt1sb');
-    
-    // 1. Validation Logic
-    function validateForm() {
-      const isFormValid = emailInput.value.trim() !== "" && 
-                          phoneInput.value.trim() !== "" && 
-                          fbInput.value.trim() !== "";
-      
-      if (isFormValid) {
-        submitBtn.classList.add('active');
-      } else {
-        submitBtn.classList.remove('active');
-      }
-    }
 
-    // Listen for typing in all fields
-    [emailInput, phoneInput, fbInput].forEach(input => {
-      input.addEventListener('input', validateForm);
-    });
+    <!-- SUCCESS POPUP -->
+    <div id="success-overlay" style="display:none;">
+      <div id="success-modal">
+        <div id="success-icon">✓</div>
+        <h2 id="success-title">Registration Successful!</h2>
+        <p id="success-msg">Thank you for signing up with 747Live. Our agent will reach out to you shortly with your account details via the email address provided.</p>
+        <button id="success-close-btn">Got it</button>
+      </div>
+    </div>
 
-    // 2. Submission Logic
-    submitBtn.addEventListener('click', function(e) {
-      // Only proceed if the form is actually valid
-      if (!submitBtn.classList.contains('active')) {
-        e.preventDefault();
-        return;
-      }
+    <script id="main-form-handler">
+    (function() {
+      const emailInput = document.getElementById('in1em');
+      const phoneInput = document.getElementById('in2ph');
+      const fbInput    = document.getElementById('in3fb');
+      const submitBtn  = document.getElementById('bt1sb');
+      const overlay    = document.getElementById('success-overlay');
+      const closeBtn   = document.getElementById('success-close-btn');
 
-      e.preventDefault();
-
-      const formData = new URLSearchParams();
-      formData.append('email', emailInput.value.trim());
-      formData.append('phone', phoneInput.value.trim());
-      formData.append('fb_name', fbInput.value.trim());
-
-      submitBtn.textContent = 'Submitting...';
-      submitBtn.style.pointerEvents = 'none';
-      submitBtn.style.animation = 'none'; // Stop pulsing while submitting
-
-      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZsUp1VXqHN4ksXNJ21YsjmVTT3gqDln2Ubk21cKzuEyCxKOzNZTyj0yMO9SFYMIKX5A/exec";
-
-      fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData
-      })
-      .then(() => {
-        submitBtn.textContent = '✓ Account Created!';
-        submitBtn.style.background = '#009159';
-      })
-      .catch(err => {
-        console.error(err);
-        submitBtn.textContent = 'Error - Try Again';
-        submitBtn.style.pointerEvents = 'auto';
-        submitBtn.style.animation = 'pulse-green 2s infinite'; // Restore pulse on error
-      });
-    });
-  })();
-</script>
-  <script id="ad-banner-loader">
-  (function() {
-    fetch('ad-config.json?t=' + Date.now())
-      .then(function(res) { return res.json(); })
-      .then(function(ad) {
-        if (ad && ad.active && ad.imageUrl) {
-          var banner = document.getElementById('ad1bn');
-          var img = document.getElementById('ad1im');
-          var link = document.getElementById('ad1lk');
-          img.src = ad.imageUrl;
-          if (ad.linkUrl) {
-            link.href = ad.linkUrl;
-          } else {
-            link.style.pointerEvents = 'none';
-          }
-          banner.style.display = 'block';
+      function validateForm() {
+        const isFormValid = emailInput.value.trim() !== "" &&
+                            phoneInput.value.trim() !== "" &&
+                            fbInput.value.trim() !== "";
+        if (isFormValid) {
+          submitBtn.classList.add('active');
+        } else {
+          submitBtn.classList.remove('active');
         }
-      })
-      .catch(function(err) { console.error('Ad config load failed:', err); });
-  })();
-</script>
-</body>
-</html>
+      }
+
+      [emailInput, phoneInput, fbInput].forEach(input => {
+        input.addEventListener('input', validateForm);
+      });
+
+      submitBtn.addEventListener('click', function(e) {
+        if (!submitBtn.classList.contains('active')) {
+          e.preventDefault();
+          return;
+        }
+        e.preventDefault();
+
+        const formData = new URLSearchParams();
+        formData.append('email', emailInput.value.trim());
+        formData.append('phone', phoneInput.value.trim());
+        formData.append('fb_name', fbInput.value.trim());
+
+        submitBtn.querySelector('#bt1tx').textContent = 'Submitting...';
+        submitBtn.style.pointerEvents = 'none';
+        submitBtn.style.animation = 'none';
+
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZsUp1VXqHN4ksXNJ21YsjmVTT3gqDln2Ubk21cKzuEyCxKOzNZTyj0yMO9SFYMIKX5A/exec";
+
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData
+        })
+        .then(() => {
+          // Show popup
+          overlay.style.display = 'flex';
+          // Reset button
+          submitBtn.querySelector('#bt1tx').textContent = 'Sign Up';
+          submitBtn.style.pointerEvents = 'auto';
+          submitBtn.classList.remove('active');
+          submitBtn.style.animation = '';
+          // Clear fields
+          emailInput.value = '';
+          phoneInput.value = '';
+          fbInput.value = '';
+        })
+        .catch(err => {
+          console.error(err);
+          submitBtn.querySelector('#bt1tx').textContent = 'Error - Try Again';
+          submitBtn.style.pointerEvents = 'auto';
+          submitBtn.style.animation = 'pulse-green 2s infinite';
+        });
+      });
+
+      closeBtn.addEventListener('click', function() {
+        overlay.style.display = 'none';
+      });
+
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) overlay.style.display = 'none';
+      });
+    })();
+    </script>
+
+    <script id="ad-banner-loader">
+    (function() {
+      fetch('ad-config.json?t=' + Date.now())
+        .then(function(res) { return res.json(); })
+        .then(function(ad) {
+          if (ad && ad.active && ad.imageUrl) {
+            var banner = document.getElementById('ad1bn');
+            var img    = document.getElementById('ad1im');
+            var link   = document.getElementById('ad1lk');
+            img.src = ad.imageUrl;
+            if (ad.linkUrl) {
+              link.href = ad.linkUrl;
+            } else {
+              link.style.pointerEvents = 'none';
+            }
+            banner.style.display = 'block';
+          }
+        })
+        .catch(function(err) { console.error('Ad config load failed:', err); });
+    })();
+    </script>
+  </body>
+</html> 
