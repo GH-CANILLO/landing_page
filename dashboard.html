@@ -213,9 +213,9 @@
       .stats-row { grid-template-columns: repeat(3, 1fr); gap: 8px; }
       .stat-number { font-size: 20px; }
       .stat-label { font-size: 10px; }
-      table { font-size: 12px; }
-      tbody td { padding: 10px 10px; }
-      .hide-mobile { display: none; }
+      table { font-size: 12px; min-width: 540px; }
+      tbody td { padding: 10px 8px; }
+      thead th { padding: 10px 8px; }
     }
   </style>
 </head>
@@ -444,7 +444,7 @@
         <td class="row-num">${idx + 1}</td>
         <td class="timestamp">${formattedTs}${isToday ? '<span class="today-badge">Today</span>' : ''}</td>
         <td class="email">${email}</td>
-        <td class="phone hide-mobile">${phone}</td>
+        <td class="phone">${phone}</td>
         <td class="fbname">${fbname}</td>
       </tr>`;
     });
