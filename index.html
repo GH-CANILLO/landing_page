@@ -150,21 +150,23 @@
 </script>
   <script id="ad-banner-loader">
   (function() {
-    try {
-      var ad = JSON.parse(localStorage.getItem('747live_ad') || 'null');
-      if (ad && ad.imageUrl) {
-        var banner = document.getElementById('ad1bn');
-        var img = document.getElementById('ad1im');
-        var link = document.getElementById('ad1lk');
-        img.src = ad.imageUrl;
-        if (ad.linkUrl) {
-          link.href = ad.linkUrl;
-        } else {
-          link.style.pointerEvents = 'none';
+    fetch('ad-config.json?t=' + Date.now())
+      .then(function(res) { return res.json(); })
+      .then(function(ad) {
+        if (ad && ad.active && ad.imageUrl) {
+          var banner = document.getElementById('ad1bn');
+          var img = document.getElementById('ad1im');
+          var link = document.getElementById('ad1lk');
+          img.src = ad.imageUrl;
+          if (ad.linkUrl) {
+            link.href = ad.linkUrl;
+          } else {
+            link.style.pointerEvents = 'none';
+          }
+          banner.style.display = 'block';
         }
-        banner.style.display = 'block';
-      }
-    } catch(e) {}
+      })
+      .catch(function(err) { console.error('Ad config load failed:', err); });
   })();
 </script>
 </body>

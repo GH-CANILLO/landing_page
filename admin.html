@@ -262,7 +262,7 @@
           </div>
         </div>
 
-        <button class="btn btn-red" id="delete-btn" style="display:none;">🗑 Remove Ad Banner</button>
+        <button class="btn btn-red" id="delete-btn" style="display:none;">🗑 Generate "Remove Ad" Config</button>
 
         <hr class="divider">
 
@@ -281,8 +281,18 @@
               <label for="link-url">Click URL <span style="font-weight:400;color:var(--muted)">(optional – where ad links to)</span></label>
               <input type="url" id="link-url" placeholder="https://747live.com">
             </div>
-            <button class="btn btn-green" id="save-btn">Save Ad Banner</button>
+            <button class="btn btn-green" id="save-btn">Generate Ad Config</button>
           </div>
+        </div>
+
+        <div id="json-output-section" style="display:none;">
+          <hr class="divider">
+          <p class="section-title">Copy this into ad-config.json on GitHub</p>
+          <textarea id="json-output" readonly style="width:100%; min-height:110px; font-family:monospace; font-size:12.5px; background:var(--input-bg); border:1.5px solid var(--border); border-radius:10px; padding:12px; resize:vertical; color:var(--text);"></textarea>
+          <button class="btn btn-green" id="copy-json-btn" style="margin-top:10px;">Copy to Clipboard</button>
+          <p style="font-size:12px; color:var(--muted); margin-top:10px; line-height:1.6;">
+            Go to your GitHub repo → open <code>ad-config.json</code> → replace all its content with this → commit. Vercel will redeploy automatically and every visitor will see the new ad within ~1 minute.
+          </p>
         </div>
 
       </div>
@@ -304,7 +314,7 @@
 <script>
   // ── Config ──────────────────────────────────────────────
   const ADMIN_PASSWORD = "747admin2024"; // ← Change this password!
-  const STORAGE_KEY = "747live_ad";
+  const CONFIG_PATH = "ad-config.json";
   // ────────────────────────────────────────────────────────
 
   const loginScreen = document.getElementById('login-screen');
@@ -313,13 +323,16 @@
   const loginBtn    = document.getElementById('login-btn');
   const loginError  = document.getElementById('login-error');
 
-  const saveBtn     = document.getElementById('save-btn');
-  const deleteBtn   = document.getElementById('delete-btn');
-  const logoutBtn   = document.getElementById('logout-btn');
-  const imgUrlInput = document.getElementById('img-url');
-  const linkUrlInput= document.getElementById('link-url');
-  const previewWrap = document.getElementById('preview-wrap');
-  const previewImg  = document.getElementById('preview-img');
+  const saveBtn      = document.getElementById('save-btn');
+  const deleteBtn     = document.getElementById('delete-btn');
+  const logoutBtn     = document.getElementById('logout-btn');
+  const imgUrlInput   = document.getElementById('img-url');
+  const linkUrlInput  = document.getElementById('link-url');
+  const previewWrap   = document.getElementById('preview-wrap');
+  const previewImg    = document.getElementById('preview-img');
+  const jsonSection   = document.getElementById('json-output-section');
+  const jsonOutput    = document.getElementById('json-output');
+  const copyJsonBtn   = document.getElementById('copy-json-btn');
 
   function showToast(msg) {
     const t = document.getElementById('toast');
@@ -329,30 +342,39 @@
   }
 
   function renderAdStatus() {
-    try {
-      var ad = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-      const badge   = document.getElementById('status-badge');
-      const noMsg   = document.getElementById('no-ad-msg');
-      const curImg  = document.getElementById('current-ad-img');
-      const linkDsp = document.getElementById('ad-link-display');
+    const badge   = document.getElementById('status-badge');
+    const noMsg   = document.getElementById('no-ad-msg');
+    const curImg  = document.getElementById('current-ad-img');
+    const linkDsp = document.getElementById('ad-link-display');
 
-      if (ad && ad.imageUrl) {
-        badge.textContent = 'Active';
-        badge.className = 'status-badge badge-active';
-        noMsg.style.display = 'none';
-        curImg.src = ad.imageUrl;
-        curImg.style.display = 'block';
-        deleteBtn.style.display = 'block';
-        linkDsp.textContent = ad.linkUrl || '';
-      } else {
-        badge.textContent = 'No Ad';
+    fetch(CONFIG_PATH + '?t=' + Date.now())
+      .then(res => res.json())
+      .then(ad => {
+        if (ad && ad.active && ad.imageUrl) {
+          badge.textContent = 'Active (live for all visitors)';
+          badge.className = 'status-badge badge-active';
+          noMsg.style.display = 'none';
+          curImg.src = ad.imageUrl;
+          curImg.style.display = 'block';
+          deleteBtn.style.display = 'block';
+          linkDsp.textContent = ad.linkUrl || '';
+        } else {
+          badge.textContent = 'No Ad Live';
+          badge.className = 'status-badge badge-none';
+          noMsg.style.display = 'block';
+          curImg.style.display = 'none';
+          deleteBtn.style.display = 'none';
+          linkDsp.textContent = '';
+        }
+      })
+      .catch(() => {
+        badge.textContent = 'Could not load ad-config.json';
         badge.className = 'status-badge badge-none';
         noMsg.style.display = 'block';
+        noMsg.textContent = 'ad-config.json not found yet — create it in your repo first.';
         curImg.style.display = 'none';
         deleteBtn.style.display = 'none';
-        linkDsp.textContent = '';
-      }
-    } catch(e) {}
+      });
   }
 
   // Login
@@ -384,26 +406,37 @@
     }, 600);
   });
 
-  // Save
+  function showGeneratedJson(obj) {
+    jsonOutput.value = JSON.stringify(obj, null, 2);
+    jsonSection.style.display = 'block';
+    jsonOutput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // Generate "save" JSON
   saveBtn.addEventListener('click', function() {
     const imageUrl = imgUrlInput.value.trim();
     const linkUrl  = linkUrlInput.value.trim();
     if (!imageUrl) { imgUrlInput.focus(); return; }
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ imageUrl, linkUrl }));
-    renderAdStatus();
-    imgUrlInput.value = '';
-    linkUrlInput.value = '';
-    previewWrap.style.display = 'none';
-    showToast('✓ Ad banner saved!');
+    showGeneratedJson({ active: true, imageUrl: imageUrl, linkUrl: linkUrl });
+    showToast('Config generated — copy it into GitHub');
   });
 
-  // Delete
+  // Generate "remove" JSON
   deleteBtn.addEventListener('click', function() {
-    if (!confirm('Remove the current ad banner?')) return;
-    localStorage.removeItem(STORAGE_KEY);
-    renderAdStatus();
-    showToast('Ad banner removed.');
+    showGeneratedJson({ active: false, imageUrl: "", linkUrl: "" });
+    showToast('Config generated — copy it into GitHub to remove the ad');
+  });
+
+  // Copy to clipboard
+  copyJsonBtn.addEventListener('click', function() {
+    jsonOutput.select();
+    navigator.clipboard.writeText(jsonOutput.value).then(() => {
+      showToast('✓ Copied to clipboard');
+    }).catch(() => {
+      document.execCommand('copy');
+      showToast('✓ Copied to clipboard');
+    });
   });
 
   // Logout
